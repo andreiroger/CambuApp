@@ -1,0 +1,369 @@
+Cambuapp Alpha 0.2 – Detailed Implementation Report
+
+You are continuing development of Cambuapp using the current backend architecture (Express + Drizzle ORM + PostgreSQL + Gemini integration).
+
+The goal of Alpha 0.2 is to extend functionality while keeping compatibility with the existing schema, routes, and structure.
+
+PART 1 – INTERACTIVE MAP (DISCOVERY IMPROVEMENT)
+Current situation
+
+The backend already supports:
+
+latitude and longitude in parties
+
+radius filtering in /api/parties
+
+city and location filtering
+
+Required additions
+Backend
+
+Add optional query filters:
+
+status=upcoming|ongoing
+
+type=party|business
+
+Database changes
+
+Add table:
+
+businesses:
+
+id
+
+name
+
+latitude
+
+longitude
+
+category
+
+imageUrl
+
+city
+
+country
+
+Add API:
+GET /api/map
+Returns:
+
+nearby parties
+
+nearby businesses
+
+Frontend requirements
+
+Map must:
+
+show markers for parties and businesses
+
+different icons
+
+bottom card preview on tap
+
+PART 2 – INTEGRATED CHAT WITH HOST
+Required database table
+
+partyMessages:
+
+id
+
+partyId
+
+senderId
+
+message
+
+createdAt
+
+Indexes:
+
+partyId
+
+senderId
+
+Backend routes
+
+POST /api/parties/:id/messages
+GET /api/parties/:id/messages
+
+Add profanity filtering using existing ProfanityFilter.
+
+Host moderation:
+DELETE /api/messages/:id
+
+PART 3 – QR CHECK-IN SYSTEM
+Database changes
+
+partyAttendees:
+Add:
+
+checkedIn boolean
+
+checkedInAt timestamp
+
+Parties:
+Add:
+
+qrToken text
+
+Backend
+
+Generate QR token when party created.
+
+Add route:
+POST /api/parties/:id/checkin
+Validates QR token and marks attendee as checked in.
+
+PART 4 – AI PARTY ASSISTANT
+Backend route
+
+POST /api/ai/party-suggestions
+
+Input:
+
+partyId
+
+userId
+
+Backend logic:
+
+Fetch party
+
+Fetch host profile
+
+Fetch attendees profiles
+
+Build prompt
+
+Call Gemini
+
+Return short suggestions list.
+
+PART 5 – OCEAN PERSONALITY TEST
+Database changes
+
+Users table:
+Add:
+
+oceanOpenness real
+
+oceanConscientiousness real
+
+oceanExtraversion real
+
+oceanAgreeableness real
+
+oceanNeuroticism real
+
+oceanLastTaken text
+
+Backend
+
+POST /api/personality/test
+Stores results and timestamp.
+
+Validation:
+Allow retake only if:
+current_date - oceanLastTaken ≥ 90 days
+
+PART 6 – SIGNUP EULA ENFORCEMENT
+Current situation
+
+Legal texts exist but are not enforced at registration.
+
+Required change
+
+Modify /api/auth/register
+
+Require:
+agreedToTerms = true
+agreedToEula = true
+
+Reject registration otherwise.
+
+Add fields:
+
+eulaAcceptedAt timestamp
+
+termsAcceptedAt timestamp
+
+PART 7 – HOST VIEW AND EDIT PARTY
+Current situation
+
+Host can fetch own parties but UX must improve.
+
+Required:
+When host clicks party:
+Use existing /api/parties/:id
+Allow editing directly via /api/parties/:id PATCH
+
+Frontend:
+Add "Edit Party" button for host.
+
+PART 8 – PROFILE PAGE IMPROVEMENT
+Backend already supports:
+
+bio
+
+avatar
+
+ratings
+
+stats
+
+Required:
+Include personality fields in /api/users/:id.
+
+Frontend:
+Display:
+
+personality traits
+
+bio
+
+stats
+
+hosted parties
+
+PART 9 – GEMINI ID VERIFICATION IMPROVEMENT
+Current situation
+
+Gemini age verification exists but needs polishing.
+
+Improve:
+
+Better error handling
+
+Retry logic
+
+Clear response structure
+
+Add:
+verificationStatus:
+
+pending
+
+verified
+
+failed
+
+PART 10 – PASSWORD SECURITY (“DOUBLE ENCRYPTION”)
+
+Your current code uses bcrypt once.
+
+Implement layered hashing:
+
+Step 1
+
+bcrypt hash password normally.
+
+Step 2
+
+Hash the bcrypt result again using SHA-256 with server-side pepper.
+
+Example:
+finalHash = SHA256(bcryptHash + PEPPER)
+
+Store:
+finalHash
+
+Login flow:
+
+bcrypt compare
+
+apply pepper hash
+
+compare stored value
+
+Store PEPPER in environment variable.
+
+PART 11 – SCHEMA CHANGES SUMMARY
+
+Users:
+
+ocean traits
+
+oceanLastTaken
+
+eulaAcceptedAt
+
+verificationStatus
+
+Parties:
+
+qrToken
+
+New tables:
+
+partyMessages
+
+businesses
+
+PART 12 – API ROUTES TO ADD
+
+POST /api/personality/test
+GET /api/map
+POST /api/ai/party-suggestions
+GET /api/parties/:id/messages
+POST /api/parties/:id/messages
+POST /api/parties/:id/checkin
+
+PART 13 – PERFORMANCE AND STRUCTURE
+
+Ensure:
+
+Index partyMessages.partyId
+
+Index businesses.city
+
+Lazy loading map results
+
+PART 14 – MOBILE UX REQUIREMENTS
+
+All new screens must:
+
+Use card layout
+
+Large tap targets
+
+Bottom navigation compatibility
+
+PART 15 – DELIVERABLES FOR ALPHA 0.2
+
+At completion provide:
+
+List of new tables
+
+Schema migration steps
+
+New endpoints
+
+Changes to authentication logic
+
+Known limitations
+
+PART 16 – PRIORITY ORDER
+
+Implement in this order:
+
+Personality test
+
+EULA enforcement
+
+Host edit improvements
+
+Chat system
+
+QR check-in
+
+Map system
+
+AI assistant
+
+Gemini polish
+
+Password layered hashing

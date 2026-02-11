@@ -1,0 +1,371 @@
+I looked through your **alfa 0.0 code**, and honestly it’s a solid foundation already. The structure is clean, the schema is logical, and the mobile-first routing is good. What you need now is not a rewrite, but **targeted improvements that push it toward a real party app instead of a generic event CRUD app**.
+
+I’ll break this into the three parts you asked for.
+
+---
+
+# 1. Technical improvements you should make first
+
+These matter before adding flashy features.
+
+## Password security (highest priority)
+
+Right now:
+
+* passwords are stored in plain text
+* login compares raw values
+
+That is visible in your auth routes and seed data. 
+
+You should:
+
+* hash passwords with bcrypt
+* compare hashes on login
+* hash seed data too
+
+This is the first thing to fix before any real deployment.
+
+---
+
+## Fix request authorization logic
+
+In this route:
+
+```
+PATCH /api/requests/:id/status
+```
+
+You update the request before verifying the host owns the party. 
+
+Correct order should be:
+
+1. Load request
+2. Load party
+3. Verify host
+4. Then update status
+5. Then add attendee
+
+Otherwise someone could potentially manipulate requests.
+
+---
+
+## Database performance improvement
+
+Your `getAttendeeParties` function loops and queries each party one by one. 
+
+This is fine for 20 users but will slow down quickly.
+
+Better:
+Use a JOIN query to fetch all parties in one request.
+
+---
+
+## Validation gaps
+
+You validate:
+
+* user creation
+* party creation
+
+But:
+
+* PATCH routes accept raw req.body
+
+You should:
+
+* create update schemas
+* validate before update
+
+Otherwise bad data will eventually break things.
+
+---
+
+## Session store
+
+You’re using MemoryStore. 
+
+Good for development, but later:
+
+* Redis sessions
+* secure cookies in production
+
+This can wait until beta.
+
+---
+
+# 2. Product improvements to better fit the purpose of the app
+
+Your app already supports:
+
+* parties
+* requests
+* attendees
+* reviews
+* profiles
+
+So the foundation is right.
+
+Now you need features that make it feel like a **party network**, not just an event list.
+
+---
+
+## A. Party lifecycle
+
+Right now parties are just records.
+
+Add:
+
+* status: upcoming / ongoing / finished
+* auto-close after date
+* review prompt after party
+
+This is a big usability improvement.
+
+---
+
+## B. Discovery improvements
+
+Your browse is basic filtering by city.
+
+Add:
+
+* filters:
+
+  * theme
+  * price
+  * date
+  * crowd size
+* sort:
+
+  * nearest
+  * most popular
+  * newest
+
+This is essential for mobile users who scroll fast.
+
+---
+
+## C. Messaging (biggest missing feature)
+
+Party apps need communication.
+
+Minimal version:
+
+* host announcements
+* chat in requests
+* message accepted guests
+
+Even simple messaging dramatically improves usefulness.
+
+---
+
+## D. Trust and safety layer
+
+You already have:
+
+* ID verified flag
+* reviews
+
+Add:
+
+* profile completeness score
+* number of parties attended
+* repeat guest indicator
+
+These increase confidence.
+
+---
+
+## E. Notifications
+
+You already store:
+
+notificationsEnabled 
+
+But no notification system yet.
+
+Add:
+
+* request accepted
+* party starting soon
+* host message
+
+This is one of the biggest retention drivers.
+
+---
+
+# 3. How to change the “instructions” and logic to fit the purpose better
+
+This is the most important part conceptually.
+
+Right now the app logic is:
+
+“List parties → request → attend”
+
+But the real purpose should be:
+
+“Curate good social experiences safely.”
+
+So the UX and instructions should guide behavior.
+
+---
+
+## A. Onboarding should guide the experience
+
+Currently onboarding only checks city and country in the guard. 
+
+Better onboarding:
+
+Ask:
+
+* preferred music or vibe
+* small gatherings or big parties
+* host or guest preference
+
+Then:
+
+* tailor browsing
+* recommend parties
+
+---
+
+## B. Instructions for hosts
+
+When creating a party, guide the host.
+
+Instead of only:
+
+* title
+* description
+* max guests
+
+Guide them with prompts:
+
+* What vibe do you want?
+* Who should come?
+* What should guests bring?
+* House rules?
+
+This improves party quality dramatically.
+
+---
+
+## C. Instructions for guests
+
+When requesting:
+
+Encourage:
+
+* short intro
+* why they want to come
+* what they bring
+
+You already have:
+message
+pledgedItems 
+
+That’s good design. You just need to emphasize it in UI.
+
+---
+
+## D. Behavioral guidance
+
+Small UX hints improve community behavior:
+
+Show tips like:
+
+* Respect host space
+* Arrive on time
+* Bring what you promised
+
+These small touches matter a lot in social apps.
+
+---
+
+## E. Positioning logic
+
+Your app should feel like:
+
+Not:
+“Public event marketplace”
+
+But:
+“Curated social network”
+
+So:
+
+* show mutual friends
+* show trust signals first
+* emphasize host personality and vibe
+
+---
+
+# 4. Improvements that would move this from Alfa to Beta
+
+If you only did five things:
+
+1. Password hashing
+2. Messaging
+3. Discovery filters
+4. Notifications
+5. Better onboarding
+
+That alone would make it feel like a real product.
+
+---
+
+# 5. How to change the instructions you give Google AI Studio
+
+If you’re using AI to improve the app, give it this direction:
+
+---
+
+**Prompt to give AI Studio**
+
+I am building a mobile-first social app called Cambuap.
+
+Purpose:
+Help people discover and host small parties and social gatherings safely and easily.
+
+Current features:
+
+* Parties
+* Requests
+* Reviews
+* Profiles
+* Attendees
+* Basic onboarding
+
+Your task:
+Suggest improvements that increase:
+
+* trust between strangers
+* ease of hosting
+* fast party discovery on mobile
+* real-time social interaction
+
+Focus on:
+
+* mobile UX
+* social dynamics
+* realistic features for a startup MVP
+
+Avoid:
+
+* enterprise complexity
+* desktop-first designs
+
+Output:
+
+1. UX improvements
+2. Feature improvements
+3. Trust features
+4. Engagement mechanics
+
+---
+
+# If you want a serious upgrade
+
+I can tell you **the 5 changes that would make Cambuap feel like a real startup-level product, not a school or demo project**.
+
+Those are different from technical fixes and much more impactful.

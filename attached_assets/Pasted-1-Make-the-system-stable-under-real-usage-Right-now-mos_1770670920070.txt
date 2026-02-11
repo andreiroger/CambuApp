@@ -1,0 +1,207 @@
+1. Make the system stable under real usage
+
+Right now most MVP apps work fine with 5 users and break with 50.
+
+To reach alpha 0.1, focus on:
+
+Rate limiting
+
+Prevent:
+• spam login attempts
+• spam party requests
+• brute force
+
+Even a simple middleware limit per IP helps a lot.
+
+Input constraints
+
+Protect the database from:
+• extremely long descriptions
+• emoji floods
+• broken coordinates
+
+Set:
+• max lengths on text fields
+• validation on numbers and dates
+
+Pagination
+
+Browsing parties should not load everything at once.
+
+Add:
+• limit
+• offset or cursor
+
+This becomes necessary much sooner than people expect.
+
+2. Make data consistent over time
+
+Early apps often break not because of features but because of stale data.
+
+For example:
+
+Automatic cleanup
+
+Add background jobs for:
+• parties that already passed
+• expired requests
+• inactive sessions
+
+Even a daily cron job is enough.
+
+Status transitions
+
+Right now parties probably only exist as “a party”.
+
+Alpha apps usually need:
+• upcoming
+• ongoing
+• finished
+• cancelled
+
+This unlocks:
+• reviews automatically
+• better filtering
+• fewer logic hacks later
+
+3. Make the experience understandable for first-time users
+
+At alpha stage, confusion kills apps more than bugs.
+
+Add:
+
+Empty states
+
+What happens when:
+• no parties exist in a city
+• user has no requests
+• profile incomplete
+
+Instead of blank pages:
+Show:
+• explanation
+• suggested action
+
+This dramatically improves usability.
+
+First-run guidance
+
+Very lightweight:
+• short hints
+• 1 or 2 tooltips
+
+Not a tutorial, just orientation.
+
+4. Logging and observability
+
+This is something many people forget until production.
+
+At alpha:
+You need to know when things break.
+
+Add:
+• request logging
+• error logging
+• failed login tracking
+
+Even simple console + file logs help.
+
+5. Prepare the system for multiple environments
+
+Right now many apps are implicitly “dev mode”.
+
+Alpha requires:
+
+Environment separation:
+• development
+• testing
+• production
+
+Use:
+• .env files
+• different database URLs
+
+This prevents catastrophic mistakes.
+
+6. Protect against the most common real-world problems
+
+Not security research level, just basics:
+
+Add:
+• basic profanity filtering (optional but useful for public apps)
+• duplicate request prevention
+• preventing users from requesting their own party
+
+Small rules like this improve realism.
+
+7. Make hosting feel real
+
+This is subtle but important.
+
+Hosts should feel:
+“I am managing an event”
+
+Good alpha features:
+• attendee count progress bar
+• simple dashboard view
+• quick accept/decline
+
+You already have the backend for this, it’s mostly UX polish.
+
+8. Prepare for real testers
+
+Before alpha testing, add:
+
+Admin abilities (hidden route)
+
+Minimal:
+• delete party
+• ban user
+• reset review
+
+Without this, testing becomes painful.
+
+9. Performance quick wins
+
+You don’t need optimization yet, but do:
+
+• Add indexes on:
+
+city
+
+hostId
+
+partyId
+
+These fields are queried often and indexing helps immediately.
+
+10. Define what alpha means for your app
+
+For a party platform, alpha 0.1 usually means:
+
+• Users can sign up
+• Users can create parties
+• Users can request and attend
+• Reviews work
+• Nothing crashes under normal usage
+
+Not:
+• perfect UI
+• perfect scaling
+• full messaging systems
+
+Alpha is about complete flow, not polish.
+
+A useful way to think about alpha 0.1
+
+Ask one question:
+
+If 20 strangers used this for a week, would:
+
+They understand what to do?
+
+The system stay stable?
+
+The data remain consistent?
+
+If yes, you are ready for alpha.

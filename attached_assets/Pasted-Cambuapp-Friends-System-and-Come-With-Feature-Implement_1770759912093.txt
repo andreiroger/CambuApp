@@ -1,0 +1,179 @@
+Cambuapp – Friends System and “Come With” Feature
+
+Implement a friends system and allow users to tag friends when joining a party.
+
+The goal is:
+
+Users can add friends
+
+Users have a friends list in their profile
+
+When requesting to attend a party, users can select friends they are coming with
+
+This must work end-to-end: database, backend routes, and frontend UI.
+
+PART 1 – FRIENDS LIST SYSTEM
+Database Changes
+
+Create a new table:
+
+friends
+
+id
+
+userId
+
+friendId
+
+status (pending, accepted)
+
+createdAt
+
+Indexes:
+
+userId
+
+friendId
+
+Rules:
+
+Friendship is mutual only when accepted
+
+Prevent duplicates
+
+Prevent adding self
+
+PART 2 – ADD FRIEND FLOW
+Backend Routes
+
+POST /api/friends/request
+
+Send friend request
+
+POST /api/friends/accept/:id
+
+Accept friend request
+
+GET /api/friends
+
+Get accepted friends list
+
+GET /api/friends/requests
+
+Get pending friend requests
+
+DELETE /api/friends/:id
+
+Remove friend
+
+PART 3 – PROFILE PAGE UI
+
+On Profile Page:
+
+Add section:
+Friends
+
+Display:
+
+Friend avatar
+
+Nickname
+
+City
+
+Buttons:
+
+Add Friend
+
+Remove Friend
+
+Search:
+
+Allow searching users by username or nickname
+
+PART 4 – TAG FRIENDS WHEN JOINING PARTY
+
+When user clicks:
+Request to Join
+
+Add field:
+"Coming with"
+
+UI:
+
+Multi-select dropdown
+
+Only show accepted friends
+
+User selects:
+Come with @nickname
+
+PART 5 – DATABASE CHANGE FOR PARTY REQUESTS
+
+Add field to partyRequests:
+
+comingWith (text array of userIds)
+
+Store selected friend IDs.
+
+PART 6 – PARTY HOST VIEW
+
+Host dashboard should show:
+Request from:
+John
+Coming with:
+Alex, Maria
+
+This helps hosts decide.
+
+PART 7 – PARTY DETAIL PAGE
+
+If accepted:
+Show:
+Coming with:
+@friend1
+@friend2
+
+PART 8 – RULES AND VALIDATION
+
+Only allow:
+
+Tagging accepted friends
+
+Maximum 5 friends per request
+
+Prevent:
+
+Tagging random users
+
+Duplicate tagging
+
+PART 9 – OPTIONAL (UX IMPROVEMENT)
+
+When browsing parties:
+Show:
+Friends going:
+
+small avatars
+
+This increases join rates significantly.
+
+PART 10 – PERFORMANCE
+
+Ensure:
+
+Friends list loads quickly
+
+Indexed queries on friends table
+
+PART 11 – DELIVERABLES
+
+Replit should provide:
+
+New schema changes
+
+New API routes
+
+Frontend changes to profile and request flow
+
+Validation logic

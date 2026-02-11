@@ -1,0 +1,208 @@
+Cambuapp – Location Privacy Rule for Party Attendance
+
+Implement a location privacy system so that users cannot see the exact location of a party until they are accepted.
+
+This must be enforced on both:
+
+Backend (security rule)
+
+Frontend (UI behavior)
+
+Do not rely only on frontend hiding. The backend must restrict the data returned.
+
+Functional Requirements
+
+When a user opens a party:
+
+Case 1 – User is NOT accepted
+
+If the user:
+
+has not requested to join, OR
+
+request status is pending, OR
+
+request was declined
+
+Then:
+
+The user must see:
+
+Approximate location only
+
+A blurred circular zone with radius of 3 km
+
+No exact address
+
+No exact coordinates
+
+Case 2 – User is accepted OR host
+
+If:
+
+request status = accepted
+OR
+
+user is host
+
+Then:
+
+Show exact coordinates
+
+Show exact address
+
+Show navigation/map pin
+
+Backend Requirements (Important)
+
+Modify GET /api/parties/:id
+
+Before returning party data:
+
+Check:
+
+Is user host?
+
+Is user accepted attendee?
+
+If NOT accepted:
+
+Remove or mask:
+
+exactAddress
+
+latitude
+
+longitude
+
+Instead return:
+
+approximateLatitude
+
+approximateLongitude
+
+approximateRadius = 3000 (meters)
+
+Approximate coordinates:
+
+Either round lat/lng
+
+Or offset randomly within ~1 km
+
+Purpose:
+Prevent reverse engineering of location.
+
+Database / Logic
+
+No schema change required.
+
+Use existing:
+partyRequests.status
+partyAttendees
+
+Logic:
+accepted = exists in partyAttendees OR hostId == userId
+
+Frontend Map Behavior
+
+If user is NOT accepted:
+
+Map must show:
+
+Circle overlay
+
+Radius = 3km
+
+Center = approximate coordinates
+
+No pin
+
+Circle style:
+
+Semi-transparent
+
+Color-washed
+
+Blur effect or low opacity fill
+
+Also show text:
+"Exact location revealed after host approval."
+
+If accepted:
+
+Show:
+
+Exact marker
+
+Address text
+
+Navigation link
+
+Frontend Party Detail Page
+
+If not accepted:
+Hide:
+
+Address
+
+Street name
+
+Navigation buttons
+
+Show instead:
+
+City
+
+Approximate area
+
+Security Requirement (Critical)
+
+Exact coordinates must NEVER be returned in the API response to unauthorized users.
+
+Even if frontend is modified, backend must enforce this.
+
+Edge Cases
+
+Host:
+
+Always sees full location
+
+Admin:
+
+Always sees full location
+
+Declined users:
+
+Same restrictions as pending
+
+Finished parties:
+
+Exact location can be shown only to attendees and host
+
+Optional Enhancement (Recommended)
+
+Instead of a perfect circle, slightly randomize center point per user request so repeated calls cannot triangulate the location.
+
+Testing Scenarios
+
+Test:
+
+Non-requesting user opens party → sees circle only
+
+Pending request → circle only
+
+Accepted request → full location
+
+Host → full location
+
+Declined request → circle only
+
+UX Goal
+
+Users should:
+
+Understand roughly where the party is
+
+Not be able to find the exact address
+
+Feel motivated to request access

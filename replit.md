@@ -33,15 +33,12 @@ The application follows a client-server architecture with a React + TypeScript f
 - **User Onboarding:** A multi-step onboarding process includes personal info, vibe preferences, location setup, and an OCEAN personality test.
 - **Data Optimization:** Optimized Drizzle ORM queries, including efficient JOINs to prevent N+1 issues.
 - **Robust Validation:** Comprehensive client and server-side input validation, including unique email constraints, date checks, and content filters.
-- **PWA Support:** Progressive Web App with manifest, service worker (network-first caching), and install prompt. Users can install CambuApp to their home screen for a native-like experience.
-- **Locale-Aware Dates:** All date/time formatting uses `Intl.DateTimeFormat` via shared utility (`client/src/lib/date-format.ts`), automatically adapting to the user's browser locale.
 
 ## External Dependencies
 - **PostgreSQL:** Primary database for all application data.
 - **Drizzle ORM:** TypeScript ORM for interacting with PostgreSQL.
 - **Google Gemini (via Replit AI Integrations):** Used for AI-powered ID verification and party suggestions.
 - **OpenStreetMap Nominatim API:** Utilized for geocoding party locations.
-- **AWS S3 (`@aws-sdk/client-s3`):** Cloud storage for all uploaded images (party images, avatars, ID documents). Bucket: `cambuapp`, Region: `eu-north-1`. Images are uploaded via `multer` memory storage and stored in S3 with folder keys (`parties/`, `avatars/`, `ids/`). Full S3 URLs are returned and stored in the database. Legacy local images still served via `/uploads` static route.
 - **bcrypt:** For secure password hashing.
 - **express-session & connect-pg-simple:** For managing and persisting user sessions.
 - **@tanstack/react-query:** For efficient data fetching and caching in the frontend.

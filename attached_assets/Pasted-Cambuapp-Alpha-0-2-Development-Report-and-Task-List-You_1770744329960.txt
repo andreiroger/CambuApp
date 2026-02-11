@@ -1,0 +1,385 @@
+Cambuapp – Alpha 0.2 Development Report and Task List
+
+You are continuing development of a mobile-first party discovery and hosting app called Cambuapp.
+
+The goal of Alpha 0.2 is to:
+
+Improve core usability
+
+Add discovery and social features
+
+Improve trust and safety
+
+Improve onboarding and profiles
+
+Strengthen security
+
+All features must be optimized for smartphones.
+
+PART 1 – INTERACTIVE PARTY MAP
+
+Implement a map-based discovery screen.
+
+Requirements:
+
+Display:
+
+Upcoming parties
+
+Ongoing parties
+
+Businesses (bars, venues, partner locations)
+
+Map behavior:
+
+GPS centering on user
+
+Smooth zoom and pan
+
+Tap marker to open bottom card
+
+Bottom card shows:
+
+Party name
+
+Host
+
+Distance
+
+Time
+
+Vibe
+
+Button to view or join
+
+Filters:
+
+Upcoming only
+
+Ongoing only
+
+Businesses only
+
+All
+
+Technical requirements:
+
+Lazy load markers
+
+Efficient queries
+
+Radius filtering support
+
+PART 2 – INTEGRATED CHAT WITH HOST
+
+Each party must include a chat feature.
+
+Requirements:
+
+Chat accessible from party page
+
+Messages stored per party
+
+Show sender name and timestamp
+
+Host moderation capability (delete messages)
+
+Structure code so group chat can be added later.
+
+PART 3 – QR CHECK-IN SYSTEM
+
+For each party:
+
+Host:
+
+QR code generated automatically
+
+Visible in host dashboard
+
+Guest:
+
+Scan QR to check in
+
+Attendance marked in database
+
+Prevent duplicate scans
+
+QR must:
+
+Be unique per party
+
+Expire when event ends
+
+PART 4 – AI PARTY ASSISTANT
+
+Add chatbot that suggests what to bring to a party.
+
+Inputs:
+
+Party vibe
+
+Host personality
+
+Attendee personalities (if available)
+
+Time of day
+
+Party type
+
+UX:
+
+Button on party page: “What should I bring?”
+
+Opens chat interface
+
+Output examples:
+
+Drinks
+
+Snacks
+
+Dress suggestions
+
+Keep responses short and practical.
+
+PART 5 – OCEAN PERSONALITY TEST
+
+At signup:
+
+Short OCEAN test
+
+10–20 quick questions
+
+Tap-based UI
+
+Store:
+
+Scores for each trait
+
+Timestamp
+
+Retake rules:
+
+Allowed once every 90 days
+
+Display countdown until available
+
+Use personality data for:
+
+Vibe matching
+
+AI suggestions
+
+PART 6 – EULA DURING SIGNUP
+
+Signup must include:
+
+Step:
+
+Show EULA
+
+Require checkbox acceptance
+
+Prevent signup without agreement
+
+Store:
+
+Acceptance timestamp
+
+Version of EULA accepted
+
+PART 7 – HOST VIEW AND EDIT PARTY
+
+Host dashboard improvement:
+
+When host taps their party:
+
+Show full party page
+
+Provide edit button
+
+Editable:
+
+Title
+
+Description
+
+Time
+
+Capacity
+
+Vibe
+
+Photos
+
+Changes must update in real time.
+
+PART 8 – PROFILE PAGE IMPROVEMENTS
+
+When user opens profile, display:
+
+Personality results
+
+Bio
+
+Profile photo
+
+Verification status
+
+Parties attended
+
+Parties hosted
+
+Layout:
+
+Mobile card layout
+
+Clear sections
+
+PART 9 – GEMINI ID VERIFICATION
+
+Flow:
+
+Upload ID image
+
+Upload selfie
+
+Send to Gemini API
+
+Validate:
+
+Age
+
+Face match (if supported)
+
+Mark verified
+
+UX:
+
+Progress indicator
+
+Retry on failure
+
+Clear error messages
+
+Security:
+
+Do not permanently store ID images unless required
+
+Encrypt temporary storage
+
+PART 10 – PASSWORD SECURITY (Layered Protection)
+
+Implement layered password protection.
+
+Requirements:
+
+Passwords must:
+
+Never be stored in plain text
+
+Be hashed using Argon2 or bcrypt
+
+Use automatic salting
+
+Additional layer (“double encryption” requirement interpreted safely):
+
+Hash password
+
+Then apply server-side pepper or second hash layer before storage
+
+Security rules:
+
+Minimum password length 8 characters
+
+No password logging
+
+Secure comparison during login
+
+PART 11 – SESSION SECURITY
+
+Implement:
+
+Secure cookies
+
+HttpOnly cookies
+
+Session expiration
+
+Logout invalidates session
+
+PART 12 – MOBILE UX REQUIREMENTS
+
+All new screens must:
+
+Use bottom navigation
+
+Have large tap targets
+
+Avoid long forms
+
+Use cards instead of dense lists
+
+PART 13 – DATABASE AND STRUCTURE CHANGES
+
+Add fields:
+
+Users:
+
+personality_scores
+
+personality_last_test_date
+
+id_verified
+
+eula_accepted_at
+
+Parties:
+
+status
+
+qr_code_token
+
+vibe_tags
+
+Messages:
+
+party_id
+
+sender_id
+
+timestamp
+
+PART 14 – PERFORMANCE REQUIREMENTS
+
+Ensure:
+
+Pagination on lists
+
+Lazy loading images
+
+Indexed queries for parties by location and time
+
+PART 15 – QUALITY REQUIREMENTS
+
+Code must:
+
+Be modular
+
+Separate UI from logic
+
+Avoid duplicate logic
+
+Use reusable components
+
+PART 16 – DELIVERABLES FOR ALPHA 0.2
+
+At completion provide:
+
+List of new components created
+
+Database schema changes
+
+API endpoints added
+
+Known limitations

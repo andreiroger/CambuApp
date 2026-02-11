@@ -1,0 +1,282 @@
+At this stage, the next improvements should shift from “add features” to stability, realism, and retention. Those are what turn an app from a demo into something people actually use.
+
+Here is what I would do next, ordered by impact.
+
+What You Should Do Next (After Alpha 0.2)
+1. Switch Session Storage (Critical)
+
+Right now sessions use MemoryStore, which is fine for development but not safe for real users.
+
+Implement:
+
+PostgreSQL session store or Redis
+
+Automatic session cleanup
+
+Session persistence after server restart
+
+This is one of the most important production steps.
+
+2. Real-Time Chat (Major UX Upgrade)
+
+Currently:
+
+Chat uses polling every few seconds.
+
+Upgrade to:
+
+WebSockets (you already have ws installed)
+
+Benefits:
+
+Instant messages
+
+Typing indicators
+
+Seen status
+
+Users immediately notice this improvement.
+
+3. Notifications System
+
+You need a way to bring users back.
+
+Add:
+
+Notification table
+
+Notifications for:
+
+Party accepted
+
+Message received
+
+Party starting soon
+
+Frontend:
+
+Bell icon
+
+Badge count
+
+Later:
+
+Push notifications (Expo or Firebase)
+
+4. Improve Party Discovery Algorithm
+
+Right now filtering is good, but discovery can be smarter.
+
+Add ranking factors:
+
+Distance
+
+Host rating
+
+Vibe match with personality
+
+Popularity
+
+Sort score example:
+score = distanceWeight + vibeMatch + hostTrust + activity
+
+This dramatically improves the browse experience.
+
+5. Friend / Social Graph System
+
+Retention increases massively when people see familiar faces.
+
+Add:
+
+Friends or followers
+
+“Friends attending” indicator
+
+Invite friends to party
+
+This is one of the biggest growth features for social apps.
+
+6. Attendance Confidence Signals
+
+Guests hesitate without trust signals.
+
+Add:
+
+“People already going” avatars
+
+Host response rate
+
+Party activity level
+
+These reduce hesitation.
+
+7. Better Onboarding Optimization
+
+Your onboarding is already good. Now optimize conversion.
+
+Add:
+
+Progress indicator
+
+Skip options
+
+Auto-detect vibe suggestions
+
+Goal:
+Under 60 seconds to usable state.
+
+8. Moderation Tools (Important Before Growth)
+
+Add:
+
+Report user
+
+Report party
+
+Report message
+
+Admin panel already exists, so just add reporting flows.
+
+9. Prevent Abandoned Parties
+
+Add:
+
+Auto-cancel if host inactive
+
+Reminder to hosts 24h before event
+
+Auto-archive old parties
+
+Keeps the app clean.
+
+10. Improve Image Handling
+
+Currently:
+
+Uploads work
+
+Add:
+
+Image compression
+
+Thumbnail generation
+
+Lazy loading galleries
+
+This improves performance significantly on mobile.
+
+11. Security Improvements
+
+You already implemented strong password handling and rate limiting.
+
+Next steps:
+
+CSRF protection
+
+Helmet middleware
+
+Upload scanning (file type validation beyond MIME)
+
+Limit login attempts per account as well as per IP
+
+These are standard before real users.
+
+12. Performance Improvements
+
+Add:
+
+Response caching for:
+
+Map queries
+
+Party browse
+
+And:
+
+Query limits on large tables
+
+13. Business Model Foundations
+
+Even if monetization is later, structure early.
+
+Add:
+
+isPromoted flag on parties
+
+featured party section
+
+business accounts
+
+No payment system yet, just the structure.
+
+14. UX Polish That Makes a Big Difference
+
+Small things that feel huge to users:
+
+Add:
+
+Skeleton loaders
+
+Pull-to-refresh
+
+Haptic feedback triggers
+
+Smooth page transitions
+
+These make the app feel professional.
+
+15. Metrics and Analytics (Very Important)
+
+Add:
+
+Number of parties created
+
+Join conversion rate
+
+Daily active users
+
+Retention
+
+Without metrics, you’re flying blind.
+
+16. Crash and Error Monitoring
+
+Add:
+
+Sentry or logging dashboard
+
+So you can see:
+
+Real user errors
+
+Failed API calls
+
+Verification failures
+
+What Stage You Are At
+
+Right now your app is at:
+
+Prototype → Early Alpha → Functional Alpha
+
+To reach Beta readiness, you need:
+
+Real-time systems
+
+Notifications
+
+Moderation
+
+Stability
+
+Analytics
+
+Not more core features.
+
+If You Want the Smartest Next Move
+
+The single most impactful feature to add next is:
+
+“People going” visualization and friend indicators
+
+It dramatically increases join rates because parties feel real instead of empty.
